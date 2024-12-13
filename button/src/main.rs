@@ -1,10 +1,19 @@
-fn main() {
-    // It is necessary to call this function once. Otherwise some patches to the runtime
-    // implemented by esp-idf-sys might not link properly. See https://github.com/esp-rs/esp-idf-template/issues/71
-    esp_idf_svc::sys::link_patches();
+#![no_std]
+#![no_main]
 
-    // Bind the log crate to the ESP Logging facilities
-    esp_idf_svc::log::EspLogger::initialize_default();
+use esp_backtrace as _;
+use esp_hal::{delay::Delay, prelude::*};
 
-    log::info!("Hello, world!");
+#[entry]
+fn main() -> ! {
+    #[allow(unused)]
+    let peripherals = esp_hal::init(esp_hal::Config::default());
+    let delay = Delay::new();
+
+    esp_println::logger::init_logger_from_env();
+
+    loop {
+        log::info!("Hello world!");
+        delay.delay(500.millis());
+    }
 }
