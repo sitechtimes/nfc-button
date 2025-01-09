@@ -1,9 +1,11 @@
+#include <PubSubClient.h>
+
 #include <WiFi.h>
 #include <PubSubClient.h>
 
 // Wi-Fi credentials
-const char* ssid = "YOUR_SSID";
-const char* password = "YOUR_PASSWORD";
+const char* ssid = "DOEGuest";
+const char* password = "NYC$itevent";
 
 // MQTT broker details
 const char* mqttServer = "70ae867d15a74e699cbf5e0c0306eda4.s1.eu.hivemq.cloud";
@@ -42,7 +44,7 @@ void loop() {
   Serial.println(message);
 
   // Send a message to a topic
-  client.publish("buttonPresses", message);
+  client.publish("buttonPresses", message.c_str());
 }
 
 void reconnect() {
