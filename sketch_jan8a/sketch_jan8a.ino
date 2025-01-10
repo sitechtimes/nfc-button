@@ -10,7 +10,7 @@ const char* password = "NYC$itevent";
 // MQTT broker details
 const char* mqttServer = "70ae867d15a74e699cbf5e0c0306eda4.s1.eu.hivemq.cloud";
 const int mqttPort = 8883;
-const char* mqttUser = "Admin";
+const char* mqttUser = "admin";
 const char* mqttPassword = "Adminpassword1";
 
 WiFiClient espClient;
@@ -50,7 +50,7 @@ void loop() {
 void reconnect() {
   while (!client.connected()) {
     Serial.print("Connecting to MQTT broker...");
-    if (client.connect("ESP32Client", mqttUser, mqttPassword)) {
+    if (client.connect("ESP32Client",  mqttUser, mqttPassword)) {
       Serial.println("connected");
 
       // Subscribe to a topic
