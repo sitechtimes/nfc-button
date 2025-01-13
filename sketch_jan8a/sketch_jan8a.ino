@@ -8,10 +8,15 @@ const char* ssid = "DOEGuest";
 const char* password = "NYC$itevent";
 
 // MQTT broker details
-const char* mqttServer = "70ae867d15a74e699cbf5e0c0306eda4.s1.eu.hivemq.cloud";
-const int mqttPort = 8883;
-const char* mqttUser = "admin";
-const char* mqttPassword = "Adminpassword1";
+// const char* mqttServer = "70ae867d15a74e699cbf5e0c0306eda4.s1.eu.hivemq.cloud";
+// const int mqttPort = 8883;
+// const char* mqttUser = "admin";
+// const char* mqttPassword = "Adminpassword1";
+
+const char* mqttServer = "b37.mqtt.one";
+const int mqttPort = 8083;
+const char* mqttUser = "deltuy8445";
+const char* mqttPassword = "30dinoqrtx";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -19,18 +24,36 @@ PubSubClient client(espClient);
 void setup() {
   Serial.begin(115200);
 
+  bool connected = connectWiFi();
+  if(!connected) {
+    Serial.println('WiFi not connected')
+  } else {
+    Serial.println('WiFi connected')
+  }
+
+
+  // Configure MQTT client
+  // client.setServer(mqttServer, mqttPort);
+  // client.setCallback(callback); // Set callback called when receiving a message
+}
+
+bool connectWiFi() {
   Serial.print("Connecting to Wifi...");
   WiFi.begin(ssid, password);
+  const int attempts = 0;
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
+    attempts++;
+
+    if(attempts = 10) {
+      return false;
+    }
   }
   Serial.println("\nConnected to Wifi");
-
-  // Configure MQTT client
-  client.setServer(mqttServer, mqttPort);
-  client.setCallback(callback); // Set callback called when receiving a message
+  Serial.println(WiFi.localIP());
+  return true;
 }
 
 void loop() {
