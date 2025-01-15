@@ -9,20 +9,26 @@ const char* password = "NYC$itevent";
 
 // MQTT broker details
 
-// const char* mqttServer = "70ae867d15a74e699cbf5e0c0306eda4.s1.eu.hivemq.cloud";
-// const int mqttPort = 8883;
-// const char* mqttUser = "admin";
-// const char* mqttPassword = "Adminpassword1";
+const char* mqttServer = "70ae867d15a74e699cbf5e0c0306eda4.s1.eu.hivemq.cloud";
+const int mqttPort = 1883;
+const char* mqttUser = "admin";
+const char* mqttPassword = "Adminpassword1";
 
 // const char* mqttServer = "b37.mqtt.one";
 // const int mqttPort = 8083;
 // const char* mqttUser = "deltuy8445";
-// const char* mqttPassword = "30dinoqrtx";
+// const char* mqttPassword = "30dinoqrtx";                              
 
-const char* mqttServer = "kef90981.ala.us-east-1.emqxsl.com";
-const int mqttPort = 8883;
-const char* mqttUser = "admin";
-const char* mqttPassword = "adminpassword";
+// const char* mqttServer = "kef90981.ala.us-east-1.emqxsl.com";
+// const int mqttPort = 1883;
+// const char* mqttUser = "admin";
+// const char* mqttPassword = "adminpassword";
+
+
+// const char* mqttServer = "broker.emqx.io";
+// const int mqttPort = 1883;
+// const char* mqttUser = "admin";
+// const char* mqttPassword = "adminpassword";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -73,18 +79,20 @@ void loop() {
   }
   client.loop();
 
-  String message = "test";
+  String message = String(millis());
   Serial.print("Publishing: ");
   Serial.println(message);
 
   // Send a message to a topic
   client.publish("buttonPresses", message.c_str());
+
+  delay(5000);
 }
 
 void reconnect() {
   while (!client.connected()) {
     Serial.print("Connecting to MQTT broker...");
-    if (client.connect("ESP32Client",  mqttUser, mqttPassword)) {
+    if (client.connect("foae8yhgojaiefgpaoiw",  mqttUser, mqttPassword)) {
       Serial.println("connected");
       client.subscribe("buttonPresses");
     } else {
