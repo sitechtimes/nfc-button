@@ -1,14 +1,14 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-const char* wifiSSID = "MeshNet";
-const char* wifiPassword = "Guest@Home271";
+const char* wifiSSID = "DOEGuest";
+const char* wifiPassword = "NYC$itevent";
 
-const char* serverIP = "http://192.168.4.80:3000";
+const char* serverIP = "http://192.168.83.147:3000";
 
 HTTPClient http;
 
-const int buttonPIN = 0; // set to actual button pin
+const int buttonPIN = 21; // set to actual button pin
 const int ledPIN = 2;
 
 void setup() {
