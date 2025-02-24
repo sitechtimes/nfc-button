@@ -7,8 +7,9 @@
 #include <esp_now.h>
 #include <WiFi.h>
 
-// REPLACE WITH YOUR RECEIVER MAC Address 08:a6:f7:b1:c4:34
-uint8_t broadcastAddress[] = {0x08, 0xa6, 0xf7, 0xb1, 0xc4, 0x34};
+// REPLACE WITH YOUR RECEIVER MAC Address 08:A6:F7:B1:B1:C0
+
+uint8_t broadcastAddress[] = {0x08, 0xA6, 0xF7, 0xB1, 0xB1, 0xC0};
 
 // Structure example to send data
 // Must match the receiver structure
@@ -24,6 +25,10 @@ struct_message myData;
 
 esp_now_peer_info_t peerInfo;
 
+const int buttonPin = 21;
+int lastState = LOW;  // the previous state from the input pin
+int currentState;     // the current reading from the input pin
+
 // callback when data is sent
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
   Serial.print("\r\nLast Packet Send Status:\t");
@@ -31,6 +36,7 @@ void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
 }
  
 void setup() {
+  pinMode(buttonPin, INPUT_PULLUP);
   // Init Serial Monitor
   Serial.begin(115200);
  
@@ -64,16 +70,38 @@ void loop() {
   strcpy(myData.a, "THIS IS A CHAR");
   myData.b = random(1,20);
   myData.c = 1.2;
-  myData.d = false;
-  
-  // Send message via ESP-NOW
-  esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &myData, sizeof(myData));
-   
-  if (result == ESP_OK) {
+  myData.d = false;  
+
+  currentState = digitalRead(buttonPin);
+
+  if (lastState == HIGH && currentState == LOW) {
+    Serial.println("The button is pressed");
+    // sendMessage(broadcastAddress, myData);
+
+    esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &myData, sizeof(myData));
+    if (result == ESP_OK) {
     Serial.println("Sent with success");
+    }
+    else {
+      Serial.println("Error sending the data");
+    }
+    delay(1000);
+    }
+  else if (lastState == LOW && currentState == HIGH) {
+    Serial.println("The button is released");
   }
-  else {
-    Serial.println("Error sending the data");
-  }
-  delay(2000);
+  // save the the last state
+  lastState = currentState;
 }
+
+void sendMessage(uint8_t address[], struct_message data) {
+  // esp_err_t result = esp_now_send(address, (uint8_t *) &data, sizeof(data));
+  //   if (result == ESP_OK) {
+  //   Serial.println("Sent with success");
+  // }
+  // else {
+  //   Serial.println("Error sending the data");
+  // }
+  // delay(1000);
+}
+
