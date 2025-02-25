@@ -57,6 +57,6 @@ void setup() {
 }
  
 void loop() {
-  Serial.println("received message");
-  delay(2000);
+  // Serial.println("received message");
+  // delay(2000);
 }
