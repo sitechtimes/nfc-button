@@ -8,17 +8,16 @@
 #include <WiFi.h>
 
 // REPLACE WITH YOUR RECEIVER MAC Address A0:B7:65:25:34:C0
+// 08:A6:F7:B1:C4:34
 
+// uint8_t broadcastAddress[] = {0xA0, 0xB7, 0x65, 0x25, 0x34, 0xC0};
+uint8_t broadcastAddress[] = {0x08, 0xA6, 0xF7, 0xB1, 0xC4, 0x34};
 
-uint8_t broadcastAddress[] = {0xA0, 0xB7, 0x65, 0x25, 0x34, 0xC0};
 
 // Structure example to send data
 // Must match the receiver structure
 typedef struct struct_message {
-  char a[32];
-  int b;
-  float c;
-  bool d;
+  String macAddress;
 } struct_message;
 
 // Create a struct_message called myData
@@ -43,6 +42,7 @@ void setup() {
  
   // Set device as a Wi-Fi Station
   WiFi.mode(WIFI_STA);
+  // WiFi.begin();
 
   // Init ESP-NOW
   if (esp_now_init() != ESP_OK) {
@@ -68,10 +68,7 @@ void setup() {
  
 void loop() {
   // Set values to send
-  strcpy(myData.a, "THIS IS A CHAR");
-  myData.b = random(1,20);
-  myData.c = 1.2;
-  myData.d = false;  
+  myData.macAddress = WiFi.macAddress();
 
   currentState = digitalRead(buttonPin);
 
