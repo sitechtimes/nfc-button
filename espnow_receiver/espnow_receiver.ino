@@ -7,17 +7,12 @@
 
 // Structure example to receive data
 // Must match the sender structure
-typedef struct struct_message {
-  String macAddress;
-} struct_message;
+String macAddress;
 
-// Create a struct_message called myData
-struct_message myData;
 
 // callback function that will be executed when data is received
 void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
-  memcpy(&myData, incomingData, sizeof(myData));
-  Serial.print(myData.macAddress);
+  Serial.println((const char*)incomingData);
 }
 
 

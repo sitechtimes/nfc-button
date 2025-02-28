@@ -10,19 +10,14 @@
 // REPLACE WITH YOUR RECEIVER MAC Address A0:B7:65:25:34:C0
 // 08:A6:F7:B1:C4:34
 
-// uint8_t broadcastAddress[] = {0xA0, 0xB7, 0x65, 0x25, 0x34, 0xC0};
-uint8_t broadcastAddress[] = {0x08, 0xA6, 0xF7, 0xB1, 0xC4, 0x34};
+uint8_t broadcastAddress[] = {0xA0, 0xB7, 0x65, 0x25, 0x34, 0xC0};
+// uint8_t broadcastAddress[] = {0x08, 0xA6, 0xF7, 0xB1, 0xC4, 0x34};
 
 
 // Structure example to send data
 // Must match the receiver structure
-typedef struct struct_message {
-  String macAddress;
-} struct_message;
 
 // Create a struct_message called myData
-struct_message myData;
-
 esp_now_peer_info_t peerInfo;
 
 const int buttonPin = 21;
@@ -68,7 +63,7 @@ void setup() {
  
 void loop() {
   // Set values to send
-  myData.macAddress = WiFi.macAddress();
+  String macAddress = WiFi.macAddress();
 
   currentState = digitalRead(buttonPin);
 
@@ -76,7 +71,7 @@ void loop() {
     Serial.println("The button is pressed");
     // sendMessage(broadcastAddress, myData);
 
-    esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &myData, sizeof(myData));
+    esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) macAddress.c_str(), sizeof(macAddress));
     if (result == ESP_OK) {
     Serial.println("Sent with success");
     }
@@ -90,16 +85,5 @@ void loop() {
   }
   // save the the last state
   lastState = currentState;
-}
-
-void sendMessage(uint8_t address[], struct_message data) {
-  // esp_err_t result = esp_now_send(address, (uint8_t *) &data, sizeof(data));
-  //   if (result == ESP_OK) {
-  //   Serial.println("Sent with success");
-  // }
-  // else {
-  //   Serial.println("Error sending the data");
-  // }
-  // delay(1000);
 }
 
