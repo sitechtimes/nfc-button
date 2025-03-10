@@ -65,8 +65,8 @@ void setup() {
     client.onEvent(onEventsCallback);
     
     // Connect to server
-    bool connected = client.connect(websockets_server);
-    client.setInsecure();
+    bool connected = client.connect(websockets_server, 3000, "/");
+    
     if (connected) {
         Serial.println("WebSocket Connected!");
         client.send("Hello WebSocket Server!");
